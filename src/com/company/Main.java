@@ -157,17 +157,32 @@ public class Main {
     }
 
     private static void CurrencyExchange(double accountNo) throws IOException {
-        var converter = new String[][]{
-                {"United States Dollar", "USD", "Kenyan Shilling", "KES", "1", "115.50"},
-                {"Kenyan Shilling","KES", "United States Dollar", "USD", "1", "0.0087"}
+        String[][] converter = new String[][]{
+                {"US Dollar", "USD", "Kenyan Shilling", "KES", "1", "115.50"},
+                {"US Dollar", "USD", "Ugandan Shilling", "UGX", "1", "115.50"},
+                {"US Dollar", "USD", "Tanzanian Shilling", "TZS", "1", "115.50"},
+                {"Kenyan Shilling", "KES", "US Dollar", "USD", "1", "0.0087"},
+                {"Kenyan Shilling", "KES", "Ugandan Shilling", "UGX", "1", "30.48"},
+                {"Kenyan Shilling", "KES", "Tanzanian Shilling", "TZS", "1", "19.91"},
+                {"Ugandan Shilling", "UGX", "US Dollar", "USD", "1", "0.0087"},
+                {"Ugandan Shilling", "UGX", "Kenyan Shilling", "KES", "1", "30.48"},
+                {"Ugandan Shilling", "UGX", "Tanzanian Shilling", "TZS", "1", "19.91"},
+                {"Tanzanian Shilling", "TZS", "US Dollar", "USD", "1", "0.0087"},
+                {"Tanzanian Shilling", "TZS", "Kenyan Shilling", "KES", "1", "30.48"},
+                {"Tanzanian Shilling", "TZS", "Ugandan Shilling", "UGX", "1", "19.91"},
         };
         // List of Available Currencies
         System.out.println("------------Available Currencies-----------");
-        for (String[] aCurrency : converter) {
-            System.out.printf("%s (%s)%n", aCurrency[0], aCurrency[1]);
+        for (int i = 0; i < converter.length; i++)
+        {
+            int j;
+            for (j = 0; j < i; j++)
+                if (converter[i][0].equals(converter[j][0]))
+                    break;
+            if (i == j)
+                System.out.printf("%s - %s%n", converter[i][1], converter[i][0]);
         }
         System.out.println("-------------------------------------------");
-
         System.out.print("Convert From: (Enter one of the above (Currency Code)): ");
         String convertFrom = scanner.next();
         System.out.print("Convert To: (Enter one of the above (Currency Code)): ");
@@ -175,12 +190,13 @@ public class Main {
 
         for (String[] strings : converter) {
             if (convertFrom.equals(strings[1]) && convertTo.equals(strings[3])) {
-                System.out.printf("For every %s %s, you will get %s% s%n", strings[4], strings[0], strings[3], strings[1]);
-            }else{
-                System.out.println("Currencies exchange rate not available.");
+                System.out.printf("For every %s %s, you will get %s %s.%n", strings[4], strings[0], strings[5], strings[2]);
+                Option(accountNo);
+                return;
             }
         }
-        Option(accountNo);
+        System.out.println("Currencies exchange rate not available.");
+        CurrencyExchange(accountNo);
     }
 
     // Get Account information.
